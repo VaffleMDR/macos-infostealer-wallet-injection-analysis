@@ -1,0 +1,13 @@
+// Microsoft Defender XDR / Advanced Hunting - concept query
+DeviceFileEvents
+| where FolderPath has '/Library/LaunchAgents' or FolderPath has '/Library/Application Support/Google/GoogleUpdate.app/Contents/MacOS'
+| where FileName in~ ('com.google.keystone.agent.plist', 'GoogleUpdate')
+| project Timestamp, DeviceName, ActionType, FolderPath, FileName, InitiatingProcessFileName, InitiatingProcessCommandLine
+
+DeviceProcessEvents
+| where ProcessCommandLine has_any ('launchctl load', 'launchctl unload', 'osascript', 'base64 -D', 'gunzip')
+| project Timestamp, DeviceName, FileName, ProcessCommandLine, InitiatingProcessFileName, InitiatingProcessCommandLine
+
+DeviceNetworkEvents
+| where RemoteUrl has 'fastfilenext.com' or RemoteUrl has_any ('api.ipify.org','icanhazip.com','ifconfig.me')
+| project Timestamp, DeviceName, InitiatingProcessFileName, InitiatingProcessCommandLine, RemoteUrl

@@ -1,0 +1,16 @@
+title: macOS Infostealer - Suspicious LaunchAgent and GoogleUpdate Persistence
+id: 6fd73f4a-2e2d-4edb-9aab-4d6f4d8f1df1
+status: experimental
+description: Detects suspicious LaunchAgent persistence masquerading as Google Keystone/GoogleUpdate under the user profile on macOS.
+logsource:
+  product: macos
+  category: file_event
+detection:
+  selection_plist:
+    TargetFilename|contains: '/Library/LaunchAgents/com.google.keystone.agent.plist'
+  selection_googleupdate:
+    TargetFilename|contains: '/Library/Application Support/Google/GoogleUpdate.app/Contents/MacOS/GoogleUpdate'
+  condition: selection_plist or selection_googleupdate
+falsepositives:
+  - Unlikely in user-writable paths with this exact combination
+level: high
